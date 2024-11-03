@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot
+  template:
+    metadata:
+      labels:
+        app: spring-boot
+    spec:
+      containers:
+      - name: spring-backend
+        image: sadok17/foyer-devops:latest
+        ports:
+        - containerPort: 8089  # This matches the server.port in application.properties
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysqldb:3306/db?createDatabaseIfNotExist=true&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"  # Ensure this matches your MySQL root user
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "your_root_password"  # Match this with your MYSQL_ROOT_PASSWORD
